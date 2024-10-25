@@ -7,13 +7,21 @@
         {{ letter }}
       </router-link>
     </div>
+
+    <pre>{{ ingredients }}</pre>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import store from '../store';
+import { onMounted, ref } from 'vue';
+import axiosClient from '../axiosClient';
 
-const meals = computed(() => store.state.meals)
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split("");
+const ingredients = ref([])
+
+onMounted(async () => {
+  const response = await axiosClient.get('/list.php?i=list')
+  console.log(response.data)
+  ingredients.value = response.data
+})
 </script>
